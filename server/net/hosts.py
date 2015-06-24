@@ -4,12 +4,14 @@
 
 import connect_db
 from server.template import templates
-
+from server.core import getconfig
 from server.utils import xpickle
 from server.cache import redisengine
 
+redis_server = eval(getconfig.get_conf("redis",'all_redis'))
+r = redisengine.RedisEngine(redis_server)
 def get_status():
-    r = redisengine.RedisEngine([('127.0.0.1',6379)])
+
     status =r.get_data("1","status")
     return status
 

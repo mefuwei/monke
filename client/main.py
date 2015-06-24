@@ -20,8 +20,11 @@ class TcpClient():
     def send(self,data):
         try:
             self.client.send(data)
-        except:
-            print ("server connect faild")
+            return 0
+        except Exception,e:
+            print ("server connect failed",e)
+            return 1
+
 
 
     def close(self):
@@ -29,23 +32,30 @@ class TcpClient():
 
 
 ci = TcpClient(config.Server,config.Port)
+import json
 
 while True:
+
+
     Qmsg = server_target.get_data()
     if Qmsg:
         try:
             host_info = Qmsg.get(timeout=1)
-            print host_info
-            info=xpickle.dumps(host_info)
 
-            ci.send(info)
+            info=json.dumps(host_info)
+
+            result = ci.send(info+"\r\n")
+
+            if result ==1:
+                #重连服务器
+                ci = TcpClient(config.Server,config.Port)
+
+        except Exception,e:
+
+            print ("empty",e)
 
 
-        except :
-            print ("empty")
-
-
-    sleep(1)
+        sleep(1)
 
 
 

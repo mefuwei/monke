@@ -87,6 +87,10 @@ class RedisEngine(object):
         """
         return self._connection(hash_key).delete(key)
 
+    def get_keys(self,hash_key):
+        return self._connection(hash_key).keys()
+
+
 
 
 
