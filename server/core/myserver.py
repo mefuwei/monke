@@ -4,10 +4,12 @@
 
 import gevent
 from gevent.server import StreamServer
-import os,time
+import os
+import time
+import json
 from server.net import hosts
 import udp_client
-import json
+from server.utils import xtime
 
 class RequestHandler(object):
 
@@ -38,11 +40,13 @@ class RequestHandler(object):
         data = json.loads(message)
 
         redis_key = "%s::%s" % (data["hostname"],data["service_name"])
+        recv_time = xtime.timestamp()
+
+        data["time"] = recv_time
         #实例化ｒｅｄｉｓ
         redis = hosts.r
-
-        redis.put_data(redis_key,redis_key,data)
-
+        redis.put_pk_data(redis_key,redis_key,data)
+        print data
 #启动一个子进程发送主机配置
 ret = os.fork()
 if (ret == 0):
@@ -51,12 +55,9 @@ if (ret == 0):
             conf = hosts.get_host_ip()
             for k,v in conf.items():
                 res=udp_client.send(k,v)
-                print res
+
 
         time.sleep(5)
-
-
-
 else:
 
 #启动收据接收服务
