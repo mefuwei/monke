@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:UTF-8 -*-
 # auther:F.W
-from client.plugins import cpu,memory,traffic,hard,load
+from conf import setting
+from plugins import cpu,memory,traffic,hard,load
 
 
 def cpu_info():

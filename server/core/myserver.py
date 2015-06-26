@@ -46,7 +46,7 @@ class RequestHandler(object):
         #实例化ｒｅｄｉｓ
         redis = hosts.r
         redis.put_pk_data(redis_key,redis_key,data)
-        print data
+
 #启动一个子进程发送主机配置
 ret = os.fork()
 if (ret == 0):

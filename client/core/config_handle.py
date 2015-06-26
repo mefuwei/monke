@@ -4,7 +4,7 @@
 
 import cPickle
 
-from client.conf.setting import rootDir
+from conf.setting import rootDir
 file_conf_pkl = rootDir + '/logs/config.pkl'
 
 

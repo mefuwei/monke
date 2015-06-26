@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding:UTF-8 -*-
 # auther:F.W
-from client.utils import xpickle
-from client.core import server_target
+
+import sys
+import json
 from socket import *
-
 from time import sleep
-
-from client.conf import config
-
+from conf import config,setting
+from core import server_target
+from utils import xtime
 class TcpClient():
 
     def __init__(self,SERVER,PORT):
@@ -22,39 +22,40 @@ class TcpClient():
             self.client.send(data)
             return 0
         except Exception,e:
-            print ("server connect failed",e)
+            print("%s %s") % ("send data failed",e[1])
+            self.client.close()
             return 1
-
-
 
     def close(self):
         self.client.close()
 
+try:
+    ci = TcpClient(config.Server,config.Port)
+except:
+    print ("Connect to the remote server failed")
+    sys.exit()
 
-ci = TcpClient(config.Server,config.Port)
-import json
 
 while True:
-
-
     Qmsg = server_target.get_data()
     if Qmsg:
-        try:
-            host_info = Qmsg.get(timeout=1)
 
-            info=json.dumps(host_info)
+        host_info = Qmsg.get(timeout=1)
 
-            result = ci.send(info+"\r\n")
+        info=json.dumps(host_info)
 
-            if result ==1:
-                #重连服务器
-                ci = TcpClient(config.Server,config.Port)
+        result = ci.send(info+"\r\n")
 
-        except Exception,e:
-
-            print ("empty",e)
-
-
+        if result ==1:
+            #重连服务器
+            while True:
+                try:
+                    ci = TcpClient(config.Server,config.Port)
+                    print ("%s reconnect success") % xtime.strdatetimefromats(xtime.timestamp())
+                    break
+                except Exception,e:
+                    print("%s %s %s") % (xtime.strdatetimefromats(xtime.timestamp()),config.Server,e[1])
+                sleep(5)
         sleep(1)
 
 

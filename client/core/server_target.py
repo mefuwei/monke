@@ -2,9 +2,8 @@
 # -*- coding:UTF-8 -*-
 # auther:keve
 
-
-
-from client.utils import xtime
+from conf import setting
+from utils import xtime
 import plugins_api
 import config_handle
 from threading import Thread
