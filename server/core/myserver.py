@@ -43,6 +43,7 @@ class RequestHandler(object):
         recv_time = xtime.timestamp()
 
         data["time"] = recv_time
+        print data
         #实例化ｒｅｄｉｓ
 
         redis = hosts.r

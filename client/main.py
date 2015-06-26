@@ -5,7 +5,7 @@
 import sys
 import json
 from socket import *
-from  multiprocessing import Queue,Process
+from  multiprocessing import Queue,Process,Lock
 from time import sleep
 from conf import config,setting
 from core import server_target
@@ -37,11 +37,14 @@ try:
 except:
     print ("Connect to the remote server failed")
     sys.exit()
-a = Queue()
+
+
 p = Process(target=udp_server.udp_server,args=())
 p.start()
 sleep(1)
 while True:
+
+
     Qmsg = server_target.get_data()
     if Qmsg:
 
