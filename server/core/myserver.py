@@ -44,6 +44,7 @@ class RequestHandler(object):
 
         data["time"] = recv_time
         #实例化ｒｅｄｉｓ
+        print data
         redis = hosts.r
         redis.put_pk_data(redis_key,redis_key,data)
 
@@ -61,7 +62,7 @@ if (ret == 0):
 else:
 
 #启动收据接收服务
-    server = StreamServer(('127.0.0.1', 7777), RequestHandler)
+    server = StreamServer(('0.0.0.0', 7777), RequestHandler)
 
     server.serve_forever()
 

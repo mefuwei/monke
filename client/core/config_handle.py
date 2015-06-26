@@ -20,9 +20,14 @@ def save_conf(conf):
 
 
 def config():
-    f = file(file_conf_pkl,'r')
-    conf=cPickle.load(f)
-    f.close()
+    try:
+        f = file(file_conf_pkl,'r')
+        conf=cPickle.load(f)
+    except IOError:
+        print("aaaaaaaa")
+        conf = None
+    finally:
+        f.close()
 
     return conf
 
