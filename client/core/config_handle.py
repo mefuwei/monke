@@ -23,11 +23,12 @@ def config():
     try:
         f = file(file_conf_pkl,'r')
         conf=cPickle.load(f)
-    except IOError:
-        print("aaaaaaaa")
-        conf = None
-    finally:
         f.close()
+    except IOError:
+        print("file read failed")
+        conf = None
+
+
 
     return conf
 

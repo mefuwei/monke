@@ -2,7 +2,7 @@
 # -*- coding:UTF-8 -*-
 # auther:F.W
 import SocketServer
-import config_handle
+from core import config_handle
 class MyUDPHandler(SocketServer.BaseRequestHandler):
     """
     This class works similar to the TCP handler class, except that
@@ -12,14 +12,18 @@ class MyUDPHandler(SocketServer.BaseRequestHandler):
     """
 
     def handle(self):
+
         data = self.request[0].strip()
         socket = self.request[1]
         server_addr = self.client_address[0]
-        config_handle.save_conf(data)
 
+        config_handle.save_conf(data)
+        print data
         socket.sendto("ok", self.client_address)
 
-if __name__ == "__main__":
+def udp_server():
     HOST, PORT = "0.0.0.0", 7600
-    server = SocketServer.UDPServer((HOST, PORT), MyUDPHandler)
+
+    server = SocketServer.UDPServer((HOST, PORT),MyUDPHandler)
+
     server.serve_forever()

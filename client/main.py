@@ -5,10 +5,13 @@
 import sys
 import json
 from socket import *
+from  multiprocessing import Queue,Process
 from time import sleep
 from conf import config,setting
 from core import server_target
 from utils import xtime
+from core import udp_server
+
 class TcpClient():
 
     def __init__(self,SERVER,PORT):
@@ -34,8 +37,10 @@ try:
 except:
     print ("Connect to the remote server failed")
     sys.exit()
-
-
+a = Queue()
+p = Process(target=udp_server.udp_server,args=())
+p.start()
+sleep(1)
 while True:
     Qmsg = server_target.get_data()
     if Qmsg:

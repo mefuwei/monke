@@ -9,15 +9,21 @@ def send(HOST,data):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     try:
         sock.connect((HOST,PORT))
+
         sock.sendto(data,(HOST, PORT))
         received = sock.recv(1024)
         sock.close()
-        return received
+        if received == "ok":
 
+            res = (HOST,received)
+
+        return res
 
     except socket.error as reason:
 
-        print(reason)
+        print("%s %s") % (HOST,reason[1])
+        res =(HOST,"failed")
+        return res
 
 
 
